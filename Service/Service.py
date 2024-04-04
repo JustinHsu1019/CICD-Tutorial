@@ -9,7 +9,7 @@ app = Flask(__name__)
 
 @app.route('/')
 def main_update():
-    return "Service is ready XDDDDD"
+    return "Service is ready XDDDDDG"
 
 @app.route('/git_update', methods=['POST'])
 def git_update():
