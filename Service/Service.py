@@ -17,8 +17,11 @@ def git_update():
     config.read(config_path)
 
     token_header = request.headers.get('Authorization')
-    if not token_header or not token_header.startswith("Token "):
+    if not token_header:
         abort(403, "未提供有效的 API Token")
+
+    if token_header != "Token " + config['pythonanywhere']['github_secret']:
+        abort(403, "提供錯誤的 API Token")
 
     pythonanywhere_username = config['pythonanywhere']['username']
     pythonanywhere_api_token = config['pythonanywhere']['api_token']
