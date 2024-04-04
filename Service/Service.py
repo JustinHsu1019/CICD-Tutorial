@@ -28,12 +28,11 @@ def git_update():
     domain_name = config['pythonanywhere']['domain_name']
 
     repo_path = './CICD-First-Try'
-    file_to_update = 'Service/Service.py'
 
     repo = git.Repo(repo_path)
     origin = repo.remotes.origin
     origin.fetch()
-    repo.git.checkout('origin/master', '--', file_to_update)
+    repo.git.reset('--hard', 'origin/master')
 
     response = requests.post(
         f'https://www.pythonanywhere.com/api/v0/user/{pythonanywhere_username}/webapps/{domain_name}/reload/',
