@@ -9,7 +9,7 @@ app = Flask(__name__)
 
 @app.route('/')
 def main_update():
-    return "Service is ready JUSTIN"
+    return "Service is ready JUSTTEST"
 
 def verify_signature(payload_body, secret_token, signature_header):
     """驗證從GitHub發送的請求，確認其SHA256簽名的有效性。
@@ -26,7 +26,7 @@ def verify_signature(payload_body, secret_token, signature_header):
 
     signature = signature_header.split('=')[1]
 
-    hmac_gen = hmac.new(secret_token.encode('utf-8'), payload_body, hashlib.sha256)
+    hmac_gen = hmac.new(secret_token, payload_body, hashlib.sha256)
     expected_signature = "sha256=" + hmac_gen.hexdigest()
 
     if not hmac.compare_digest(expected_signature, signature):
