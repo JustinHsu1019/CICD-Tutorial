@@ -1,4 +1,4 @@
-name: Deploy to PythonAnywhere
+name: Deploy to PythonAnywhere via SSH
 
 on:
   push:
@@ -9,13 +9,14 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
+      - uses: actions/checkout@v2
 
-    - name: Deploy to PythonAnywhere
-      uses: efiShtainer/pythonanywhere-deploy@v1.3
-      with:
-        pythonanywhere_username: ${{ secrets.PYTHONANYWHERE_USERNAME }}
-        pythonanywhere_api_token: ${{ secrets.PYTHONANYWHERE_API_TOKEN }}
-        project_path: '/home/justincicd/server'
-        project_source_path: '.'
-        restart_web_app: true
+      - name: Deploy via SSH
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.PYTHONANYWHERE_USERNAME }}.pythonanywhere.com
+          username: ${{ secrets.PYTHONANYWHERE_USERNAME }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          script: |
+            cd /home/${{ secrets.PYTHONANYWHERE_USERNAME }}/server
+            git pull
