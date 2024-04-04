@@ -1,0 +1,14 @@
+name: Update Server
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger Flask Application Update
+        run: |
+          curl -X POST -H "Authorization: Token ${{ secrets.FLASK_APP_TOKEN }}" https://justincicd.pythonanywhere.com/git_update
