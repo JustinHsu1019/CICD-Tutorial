@@ -18,5 +18,5 @@ jobs:
           username: ${{ secrets.PYTHONANYWHERE_USERNAME }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
-            cd /home/${{ secrets.PYTHONANYWHERE_USERNAME }}/server
+            cd /home/${{ secrets.PYTHONANYWHERE_USERNAME }}/mysite
             git pull
