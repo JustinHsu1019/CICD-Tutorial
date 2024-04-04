@@ -16,6 +16,6 @@ jobs:
       with:
         pythonanywhere_username: ${{ secrets.PYTHONANYWHERE_USERNAME }}
         pythonanywhere_api_token: ${{ secrets.PYTHONANYWHERE_API_TOKEN }}
-        project_path: '/home/yourusername/yourprojectfolder'
+        project_path: '/home/justincicd/server'
         project_source_path: '.'
         restart_web_app: true
