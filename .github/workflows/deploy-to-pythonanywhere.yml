@@ -3,7 +3,7 @@ name: Deploy to PythonAnywhere
 on:
   push:
     branches:
-      - main
+      - master
 
 jobs:
   deploy:
