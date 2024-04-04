@@ -5,16 +5,21 @@ app = Flask(__name__)
 
 @app.route('/')
 def main_update():
-    return "Service is ready"
+    return "Service is ready XDXDXD"
 
 @app.route('/git_update', methods=['POST'])
 def git_update():
-    repo = git.Repo('./CICD-First-Try')
+    repo_path = './CICD-First-Try'
+    repo = git.Repo(repo_path)
     origin = repo.remotes.origin
-    repo.create_head('master', origin.refs.master).set_tracking_branch(origin.refs.master).checkout()
-    origin.pull()
-    return "Pulled", 200
+
+    origin.fetch()
+
+    file_to_update = 'Service/Service.py'
+
+    repo.git.checkout('origin/master', '--', file_to_update)
+
+    return "Force-updated specific file from Git", 200
 
 if __name__ == '__main__':
     app.run(debug=True)
-# 0405
