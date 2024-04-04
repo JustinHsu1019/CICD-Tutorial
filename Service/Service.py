@@ -20,14 +20,16 @@ def git_update():
 
     secret_token = config['pythonanywhere']['github_secret'].encode('utf-8')
 
-    signature = request.headers.get('X-Hub-Signature-256')
+    signature_header = request.headers.get('X-Hub-Signature-256')
+    if not signature_header:
+        abort(400, 'Missing X-Hub-Signature-256 header')
 
-    if signature is None:
-        abort(400, 'X-Hub-Signature-256 header missing.')
+    signature = signature_header.split('=')[1]
 
-    digest = hmac.new(secret_token, request.data, hashlib.sha256).hexdigest()
+    hmac_gen = hmac.new(secret_token, request.data, hashlib.sha256)
+    expected_signature = hmac_gen.hexdigest()
 
-    if not hmac.compare_digest(f'sha256={digest}', signature):
+    if not hmac.compare_digest(expected_signature, signature):
         abort(403)
 
     pythonanywhere_username = config['pythonanywhere']['username']
