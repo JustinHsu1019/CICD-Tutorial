@@ -1,13 +1,15 @@
-from flask import Flask
+from flask import Flask, request, abort
 import git
 import requests
 import configparser
+import hmac
+import hashlib
 
 app = Flask(__name__)
 
 @app.route('/')
 def main_update():
-    return "Service is ready"
+    return "Service is ready XDDDDD"
 
 @app.route('/git_update', methods=['POST'])
 def git_update():
@@ -15,6 +17,18 @@ def git_update():
 
     config = configparser.ConfigParser()
     config.read(config_path)
+
+    secret_token = config['pythonanywhere']['github_secret'].encode('utf-8')
+
+    signature = request.headers.get('X-Hub-Signature-256')
+
+    if signature is None:
+        abort(400, 'X-Hub-Signature-256 header missing.')
+
+    digest = hmac.new(secret_token, request.data, hashlib.sha256).hexdigest()
+
+    if not hmac.compare_digest(f'sha256={digest}', signature):
+        abort(403)
 
     pythonanywhere_username = config['pythonanywhere']['username']
     pythonanywhere_api_token = config['pythonanywhere']['api_token']
