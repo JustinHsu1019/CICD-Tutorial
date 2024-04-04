@@ -1,1 +1,1 @@
-# CICD Practice
+# CI/CD Practice
