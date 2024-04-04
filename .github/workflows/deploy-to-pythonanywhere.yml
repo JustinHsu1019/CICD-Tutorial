@@ -1,4 +1,4 @@
-name: Deploy to PythonAnywhere via SSH
+name: Restart PythonAnywhere app
 
 on:
   push:
@@ -6,17 +6,16 @@ on:
       - master
 
 jobs:
-  deploy:
+  restart-pythonanywhere-app:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-
-      - name: Deploy via SSH
-        uses: appleboy/ssh-action@master
-        with:
-          host: ${{ secrets.PYTHONANYWHERE_USERNAME }}.pythonanywhere.com
-          username: ${{ secrets.PYTHONANYWHERE_USERNAME }}
-          key: ${{ secrets.SSH_PRIVATE_KEY }}
-          script: |
-            cd /home/${{ secrets.PYTHONANYWHERE_USERNAME }}/mysite
-            git pull
+      - name: Restart Flask app on PythonAnywhere
+        run: |
+          echo "Restarting PythonAnywhere web app..."
+          curl -H "Authorization: Token ${{ secrets.PYTHONANYWHERE_API_TOKEN }}" \
+               -X POST \
+               https://www.pythonanywhere.com/api/v0/user/${{ secrets.PYTHONANYWHERE_USERNAME }}/webapps/${{ secrets.PYTHONANYWHERE_DOMAIN }}/reload/
+        env:
+          PYTHONANYWHERE_API_TOKEN: ${{ secrets.PYTHONANYWHERE_API_TOKEN }}
+          PYTHONANYWHERE_USERNAME: justincicd
+          PYTHONANYWHERE_DOMAIN: justincicd.pythonanywhere.com
