@@ -7,7 +7,7 @@ app = Flask(__name__)
 
 @app.route('/')
 def main_update():
-    return "Service is ready TWTWTWTW"
+    return "Service is ready USUSUS GGDD"
 
 @app.route('/git_update', methods=['POST'])
 def git_update():
@@ -19,7 +19,7 @@ def git_update():
     pythonanywhere_username = config['pythonanywhere']['username']
     pythonanywhere_api_token = config['pythonanywhere']['api_token']
     domain_name = config['pythonanywhere']['domain_name']
-    
+
     repo_path = './CICD-First-Try'
     file_to_update = 'Service/Service.py'
 
@@ -34,9 +34,9 @@ def git_update():
     )
 
     if response.status_code == 200:
-        return "Force-updated specific file from Git and reloaded PythonAnywhere web app", 200
+        return "Updated Service from Git and reloaded PythonAnywhere web app", 200
     else:
-        return f'Failed to reload PythonAnywhere web app. Status code: {response.status_code}', 500
+        return f'Failed to Updated Service from Git and reload PythonAnywhere web app. Status code: {response.status_code}', 500
 
 if __name__ == '__main__':
     app.run(threaded=True, debug=True)
